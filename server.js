@@ -88,8 +88,7 @@ Respond ONLY with valid JSON (no markdown):
       prompt: parsed.prompt,
       n: 1,
       size: '1536x1024',
-      quality: 'medium',
-      response_format: 'b64_json'
+      quality: 'medium'
     });
 
     res.json({
