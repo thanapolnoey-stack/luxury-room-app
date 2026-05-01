@@ -48,7 +48,7 @@ app.post('/api/generate', upload.array('images', 10), async (req, res) => {
       : `Room style: ${style} luxury interior`;
 
     const claudeRes = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-5-20250929',
       max_tokens: 1000,
       messages: [{
         role: 'user',
