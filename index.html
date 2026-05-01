@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Artwall — Luxury Room Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8D5A3;
+  --dark: #0E0E0F;
+  --dark2: #1A1A1C;
+  --dark3: #242426;
+  --mid: #3A3A3C;
+  --muted: #6B6B6E;
+  --light: #E8E6E1;
+  --white: #F5F3EE;
+  --accent: #534AB7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--light);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+
+/* Header */
+.header{padding:2rem 3rem;border-bottom:0.5px solid var(--mid);display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;letter-spacing:0.15em;color:var(--white)}
+.logo span{color:var(--gold)}
+.tagline{font-size:11px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase}
+
+/* Layout */
+.main{max-width:1100px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:380px 1fr;gap:3rem;align-items:start}
+@media(max-width:800px){.main{grid-template-columns:1fr;padding:2rem 1rem}}
+
+/* Panel */
+.panel{display:flex;flex-direction:column;gap:1.5rem}
+.section{border:0.5px solid var(--mid);border-radius:4px;overflow:hidden}
+.section-head{padding:1rem 1.25rem;border-bottom:0.5px solid var(--mid);display:flex;align-items:center;gap:10px;background:var(--dark2)}
+.section-num{width:20px;height:20px;border-radius:50%;border:0.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted)}
+.section-head h3{font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:400;color:var(--light)}
+.section-body{padding:1.25rem;background:var(--dark2)}
+
+/* Keys */
+.key-field{margin-bottom:10px}
+.key-label{font-size:11px;color:var(--muted);letter-spacing:0.08em;margin-bottom:5px}
+.key-row{display:flex;gap:6px}
+.key-row input{flex:1;background:var(--dark3);border:0.5px solid var(--mid);border-radius:3px;padding:8px 10px;color:var(--light);font-size:12px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.key-row input:focus{border-color:var(--gold)}
+.key-row button{background:none;border:0.5px solid var(--mid);border-radius:3px;padding:8px 12px;color:var(--muted);font-size:11px;cursor:pointer;white-space:nowrap;transition:color 0.2s}
+.key-row button:hover{color:var(--gold)}
+
+/* Upload */
+.upload-zone{border:1px dashed var(--mid);border-radius:4px;padding:2.5rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s}
+.upload-zone:hover{border-color:var(--gold);background:rgba(201,168,76,0.04)}
+.upload-icon{font-size:2rem;margin-bottom:0.5rem;opacity:0.4}
+.upload-hint{font-size:11px;color:var(--muted);letter-spacing:0.05em}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:12px}
+.img-card{border:0.5px solid var(--mid);border-radius:3px;overflow:hidden;position:relative}
+.img-card img{width:100%;height:72px;object-fit:cover;display:block}
+.img-footer{background:var(--dark3);padding:5px 6px;display:flex;gap:4px;align-items:center}
+.img-footer select{flex:1;background:var(--dark);border:none;color:var(--muted);font-size:10px;outline:none;cursor:pointer}
+.img-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:0 2px;line-height:1}
+.img-remove:hover{color:#E24B4A}
+
+/* Options grid */
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.opts.four{grid-template-columns:repeat(4,1fr)}
+.opt-btn{border:0.5px solid var(--mid);border-radius:3px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--dark3)}
+.opt-btn:hover{border-color:var(--gold-light)}
+.opt-btn.active{border-color:var(--gold);background:rgba(201,168,76,0.08)}
+.opt-icon{font-size:16px;margin-bottom:4px}
+.opt-frame{height:28px;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.opt-name{font-size:10px;color:var(--muted);letter-spacing:0.06em}
+.opt-btn.active .opt-name{color:var(--gold-light)}
+.random-btn{border:0.5px dashed var(--gold);border-radius:3px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;background:transparent}
+.random-btn:hover,.random-btn.active{background:rgba(201,168,76,0.08)}
+.random-btn .opt-name{color:var(--gold)}
+
+/* Generate */
+.gen-btn{width:100%;padding:14px;background:var(--gold);color:var(--dark);border:none;border-radius:3px;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;letter-spacing:0.15em;cursor:pointer;transition:opacity 0.2s;text-transform:uppercase}
+.gen-btn:hover{opacity:0.88}
+.gen-btn:disabled{opacity:0.35;cursor:not-allowed}
+.progress{height:2px;background:var(--mid);border-radius:1px;overflow:hidden;margin-top:8px}
+.progress-bar{height:100%;width:0%;background:var(--gold);transition:width 0.5s ease}
+.status{font-size:11px;color:var(--muted);text-align:center;margin-top:8px;letter-spacing:0.05em;min-height:18px}
+.status.err{color:#E24B4A}
+.status.ok{color:#1D9E75}
+
+/* Result */
+.result-panel{position:sticky;top:2rem}
+.result-placeholder{border:0.5px solid var(--mid);border-radius:4px;min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;color:var(--muted)}
+.result-placeholder-icon{font-size:3rem;opacity:0.2}
+.result-placeholder p{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.4}
+.result-box{border:0.5px solid var(--mid);border-radius:4px;overflow:hidden}
+.result-box img{width:100%;display:block}
+.result-meta{padding:1rem 1.25rem;background:var(--dark2);display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid var(--mid)}
+.result-info{font-size:11px;color:var(--muted);letter-spacing:0.05em}
+.result-info strong{color:var(--gold-light);font-weight:400}
+.download-btn{font-size:11px;color:var(--gold);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;border:0.5px solid var(--gold);border-radius:2px;padding:6px 14px;transition:background 0.2s}
+.download-btn:hover{background:rgba(201,168,76,0.1)}
+.style-chosen{display:inline-block;background:rgba(201,168,76,0.1);color:var(--gold-light);border-radius:2px;padding:3px 10px;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <div class="logo">Art<span>wall</span></div>
+  </div>
+  <div class="tagline">Luxury Room Preview · Powered by Claude + gpt-image-2</div>
+</header>
+
+<main class="main">
+  <!-- LEFT PANEL -->
+  <div class="panel">
+
+    <!-- API Keys -->
+    <div class="section">
+      <div class="section-head"><span class="section-num">1</span><h3>API Keys</h3></div>
+      <div class="section-body">
+        <div class="key-field">
+          <div class="key-label">Anthropic API Key</div>
+          <div class="key-row">
+            <input type="password" id="ant-key" placeholder="sk-ant-..."/>
+            <button onclick="toggle('ant-key',this)">show</button>
+          </div>
+        </div>
+        <div class="key-field" style="margin-bottom:0">
+          <div class="key-label">OpenAI API Key (gpt-image-2)</div>
+          <div class="key-row">
+            <input type="password" id="oai-key" placeholder="sk-proj-..."/>
+            <button onclick="toggle('oai-key',this)">show</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload -->
+    <div class="section">
+      <div class="section-head"><span class="section-num">2</span><h3>Upload Artworks</h3></div>
+      <div class="section-body">
+        <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-in').click()">
+          <div class="upload-icon">+</div>
+          <div class="upload-hint">Click or drag images here — multiple allowed</div>
+        </div>
+        <input type="file" id="file-in" accept="image/*" multiple style="display:none"/>
+        <div class="img-grid" id="img-grid"></div>
+      </div>
+    </div>
+
+    <!-- Frame -->
+    <div class="section">
+      <div class="section-head"><span class="section-num">3</span><h3>Frame Style</h3></div>
+      <div class="section-body">
+        <div class="opts four" id="frame-opts">
+          <div class="opt-btn active" data-frame="elegant gold ornate frame" onclick="pick(this,'frame')">
+            <div class="opt-frame"><span style="display:inline-block;width:26px;height:22px;border:3px solid #C9A84C"></span></div>
+            <div class="opt-name">Gold</div>
+          </div>
+          <div class="opt-btn" data-frame="sleek matte black modern frame" onclick="pick(this,'frame')">
+            <div class="opt-frame"><span style="display:inline-block;width:26px;height:22px;border:3px solid #333"></span></div>
+            <div class="opt-name">Black</div>
+          </div>
+          <div class="opt-btn" data-frame="minimal thin white gallery frame" onclick="pick(this,'frame')">
+            <div class="opt-frame"><span style="display:inline-block;width:26px;height:22px;border:2px solid #aaa"></span></div>
+            <div class="opt-name">White</div>
+          </div>
+          <div class="opt-btn" data-frame="ornate baroque silver decorative frame" onclick="pick(this,'frame')">
+            <div class="opt-frame"><span style="display:inline-block;width:26px;height:22px;border:4px double #8B6914"></span></div>
+            <div class="opt-name">Ornate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Style -->
+    <div class="section">
+      <div class="section-head"><span class="section-num">4</span><h3>Room Style</h3></div>
+      <div class="section-body">
+        <div class="opts" id="style-opts">
+          <div class="opt-btn active" data-style="modern luxury" onclick="pick(this,'style')"><div class="opt-icon">🏛</div><div class="opt-name">Modern luxury</div></div>
+          <div class="opt-btn" data-style="classic european" onclick="pick(this,'style')"><div class="opt-icon">🕯</div><div class="opt-name">Classic european</div></div>
+          <div class="opt-btn" data-style="minimalist japandi" onclick="pick(this,'style')"><div class="opt-icon">🌿</div><div class="opt-name">Japandi</div></div>
+          <div class="opt-btn" data-style="art deco" onclick="pick(this,'style')"><div class="opt-icon">💎</div><div class="opt-name">Art deco</div></div>
+          <div class="opt-btn" data-style="dark moody" onclick="pick(this,'style')"><div class="opt-icon">🌑</div><div class="opt-name">Dark moody</div></div>
+          <div class="opt-btn" data-style="scandinavian" onclick="pick(this,'style')"><div class="opt-icon">❄</div><div class="opt-name">Scandinavian</div></div>
+          <div class="opt-btn" data-style="hollywood regency" onclick="pick(this,'style')"><div class="opt-icon">✨</div><div class="opt-name">Hollywood</div></div>
+          <div class="random-btn" id="random-btn" onclick="pickRandom()"><div class="opt-icon">🎲</div><div class="opt-name">AI Random</div></div>
+        </div>
+        <div id="style-chosen-area"></div>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="gen-btn" onclick="generate()">Generate Room</button>
+    <div class="progress"><div class="progress-bar" id="prog"></div></div>
+    <div class="status" id="status"></div>
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="result-panel" id="result-panel">
+    <div class="result-placeholder" id="placeholder">
+      <div class="result-placeholder-icon">🖼</div>
+      <p>Your luxury room will appear here</p>
+    </div>
+  </div>
+</main>
+
+<script>
+const API_BASE = 'http://localhost:3000';
+let images = [];
+let selectedFrame = 'elegant gold ornate frame';
+let selectedStyle = 'modern luxury';
+let isRandom = false;
+
+function toggle(id, btn) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.textContent = el.type === 'password' ? 'show' : 'hide';
+}
+
+function pick(el, group) {
+  const attr = group === 'frame' ? '[data-frame]' : '[data-style]';
+  document.querySelectorAll(`#${group === 'frame' ? 'frame' : 'style'}-opts ${attr}`).forEach(e => e.classList.remove('active'));
+  if (group === 'style') {
+    document.getElementById('random-btn').classList.remove('active');
+    isRandom = false;
+    document.getElementById('style-chosen-area').innerHTML = '';
+  }
+  el.classList.add('active');
+  if (group === 'frame') selectedFrame = el.dataset.frame;
+  else selectedStyle = el.dataset.style;
+}
+
+function pickRandom() {
+  document.querySelectorAll('#style-opts [data-style]').forEach(e => e.classList.remove('active'));
+  document.getElementById('random-btn').classList.add('active');
+  isRandom = true;
+  selectedStyle = 'AUTO';
+  document.getElementById('style-chosen-area').innerHTML = '<div class="style-chosen">Claude will choose the best style</div>';
+}
+
+const fi = document.getElementById('file-in');
+fi.addEventListener('change', e => handleFiles(e.target.files));
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = 'var(--gold)'; });
+dz.addEventListener('dragleave', () => dz.style.borderColor = '');
+dz.addEventListener('drop', e => { e.preventDefault(); dz.style.borderColor = ''; handleFiles(e.dataTransfer.files); });
+
+function handleFiles(files) {
+  [...files].forEach(f => {
+    const r = new FileReader();
+    r.onload = ev => {
+      images.push({ src: ev.target.result, file: f, orientation: 'landscape' });
+      renderGrid();
+    };
+    r.readAsDataURL(f);
+  });
+}
+
+function renderGrid() {
+  const g = document.getElementById('img-grid');
+  g.innerHTML = '';
+  images.forEach((img, i) => {
+    const d = document.createElement('div');
+    d.className = 'img-card';
+    d.innerHTML = `<img src="${img.src}">
+    <div class="img-footer">
+      <select onchange="images[${i}].orientation=this.value">
+        <option value="landscape">Landscape</option>
+        <option value="portrait">Portrait</option>
+      </select>
+      <button class="img-remove" onclick="images.splice(${i},1);renderGrid()">✕</button>
+    </div>`;
+    g.appendChild(d);
+  });
+}
+
+function setStatus(msg, type = '') {
+  const s = document.getElementById('status');
+  s.textContent = msg;
+  s.className = 'status' + (type ? ' ' + type : '');
+}
+function setProgress(p) { document.getElementById('prog').style.width = p + '%'; }
+
+async function generate() {
+  const antKey = document.getElementById('ant-key').value.trim();
+  const oaiKey = document.getElementById('oai-key').value.trim();
+  if (!antKey) { setStatus('Please enter Anthropic API Key', 'err'); return; }
+  if (!oaiKey) { setStatus('Please enter OpenAI API Key', 'err'); return; }
+  if (images.length === 0) { setStatus('Please upload at least one image', 'err'); return; }
+
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true;
+  setProgress(10);
+  setStatus('Analyzing artworks with Claude...');
+
+  try {
+    const formData = new FormData();
+    formData.append('anthropicKey', antKey);
+    formData.append('openaiKey', oaiKey);
+    formData.append('frame', selectedFrame);
+    formData.append('style', selectedStyle);
+    formData.append('orientations', JSON.stringify(images.map(i => i.orientation)));
+    images.forEach((img, i) => formData.append('images', img.file, img.file.name));
+
+    setProgress(30);
+
+    const res = await fetch(`${API_BASE}/api/generate`, { method: 'POST', body: formData });
+    setProgress(70);
+
+    const data = await res.json();
+    if (!res.ok || data.error) { setStatus('Error: ' + data.error, 'err'); return; }
+
+    setProgress(95);
+    setStatus('Rendering result...', '');
+
+    const chosenStyle = data.chosen_style || selectedStyle;
+    if (isRandom) {
+      document.getElementById('style-chosen-area').innerHTML = `<div class="style-chosen">AI chose: ${chosenStyle}</div>`;
+    }
+
+    document.getElementById('placeholder') && (document.getElementById('placeholder').style.display = 'none');
+    document.getElementById('result-panel').innerHTML = `
+      <div class="result-box">
+        <img src="data:image/png;base64,${data.image}" alt="Generated luxury room"/>
+        <div class="result-meta">
+          <div class="result-info">Style: <strong>${chosenStyle}</strong> &nbsp;·&nbsp; ${images.length} artwork${images.length > 1 ? 's' : ''}</div>
+          <a class="download-btn" href="data:image/png;base64,${data.image}" download="artwall-luxury.png">Download</a>
+        </div>
+      </div>`;
+
+    setProgress(100);
+    setStatus('Done — your room is ready', 'ok');
+  } catch (err) {
+    setStatus('Error: ' + err.message, 'err');
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => setProgress(0), 3000);
+  }
+}
+</script>
+</body>
+</html>
